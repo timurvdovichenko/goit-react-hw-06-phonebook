@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { Button } from '../Common.styled';
 import { List, ListItem } from './ContactList.styled';
 const ContactList = ({ contacts, onClick }) => {
+  // console.log('contacts :>> ', contacts);
   return (
     <List>
       {contacts.map(({ name, id, number }) => {
