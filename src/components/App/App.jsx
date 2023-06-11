@@ -8,20 +8,11 @@ import Filter from '../Filter';
 const CL_KEY = 'contacts';
 
 const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(contactsLocalStorage());
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const localStorageContacts = JSON.parse(localStorage.getItem(CL_KEY));
-    if (localStorageContacts) {
-      setContacts(prevState => {
-        return [...prevState, ...localStorageContacts];
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    contacts && localStorage.setItem(CL_KEY, JSON.stringify(contacts));
+    localStorage.setItem(CL_KEY, JSON.stringify(contacts));
   }, [contacts]);
 
   const formSubmitHandler = data => {
@@ -41,11 +32,11 @@ const App = () => {
     setFilter(e.currentTarget.value);
   };
   const onDeleteContactHandler = id => {
-    setContacts(
-      contacts.filter(contact => {
+    setContacts(prevState => {
+      return prevState.filter(contact => {
         return contact.id !== id;
-      }),
-    );
+      });
+    });
   };
 
   function getFilteredContacts(data) {
@@ -55,6 +46,13 @@ const App = () => {
     return data.filter(contact => {
       return contact.name.toLowerCase().includes(filter.toLowerCase());
     });
+  }
+  function contactsLocalStorage() {
+    const localStorageContacts = JSON.parse(localStorage.getItem(CL_KEY));
+    if (localStorageContacts === null) {
+      return [];
+    }
+    return localStorageContacts;
   }
 
   return (
