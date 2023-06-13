@@ -9,12 +9,16 @@ const ContactForm = ({ onSubmitForm }) => {
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    if (e.currentTarget.name === 'number') {
-      setNumber(e.currentTarget.value);
+    const { name, value } = e.currentTarget;
+    if (name === 'number') {
+      setNumber(value);
+      return;
     }
-    if (e.currentTarget.name === 'name') {
-      setName(e.currentTarget.value);
+    if (name === 'name') {
+      setName(value);
+      return;
     }
+    throw new Error(`There is no field name - ${name}`);
   };
 
   const handleSubmitForm = e => {

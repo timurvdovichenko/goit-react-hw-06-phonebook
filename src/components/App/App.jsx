@@ -1,19 +1,24 @@
-// import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import ContactList from '../ContactList/ContactList';
 import ContactForm from '../ContactForm/ContactForm';
 import { H2Styled } from './App.styled';
 import Filter from '../Filter';
+import useLocalStorage from 'utilities/LocalStorageHandler';
 
 const CL_KEY = 'contacts';
 
 const App = () => {
-  const [contacts, setContacts] = useState(contactsLocalStorage());
+  // const [contacts, setContacts] = useState(contactsLocalStorage());
+  const [contacts, setContacts] = useState(useLocalStorage(CL_KEY));
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem(CL_KEY, JSON.stringify(contacts));
-  }, [contacts]);
+  console.log('contacts :>> ', contacts);
+
+  // useEffect(() => {
+  //   localStorage.setItem(CL_KEY, JSON.stringify(contacts));
+  // }, [contacts]);
+
+  useLocalStorage(CL_KEY, contacts);
 
   const formSubmitHandler = data => {
     const isExist = contacts.find(
@@ -40,20 +45,20 @@ const App = () => {
   };
 
   function getFilteredContacts(data) {
-    if (data === undefined || data === '') {
-      return;
-    }
+    // if (data === undefined || data === '') {
+    //   return;
+    // }
     return data.filter(contact => {
       return contact.name.toLowerCase().includes(filter.toLowerCase());
     });
   }
-  function contactsLocalStorage() {
-    const localStorageContacts = JSON.parse(localStorage.getItem(CL_KEY));
-    if (localStorageContacts === null) {
-      return [];
-    }
-    return localStorageContacts;
-  }
+  // function contactsLocalStorage() {
+  //   const localStorageContacts = JSON.parse(localStorage.getItem(CL_KEY));
+  //   if (localStorageContacts === null) {
+  //     return [];
+  //   }
+  //   return localStorageContacts;
+  // }
 
   return (
     <div>
